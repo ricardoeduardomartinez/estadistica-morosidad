@@ -58,7 +58,7 @@
             margin-top: 10px;
         }
         
-        /* LOGOS */
+        /* LOGOS - ESTILOS MEJORADOS */
         .logos-container {
             display: flex;
             justify-content: center;
@@ -72,14 +72,42 @@
             padding: 25px;
             border-radius: 15px;
             background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            box-shadow: 8px 8px 16px #d9d9d9, -8px -8px 16px #ffffff;
-            transition: all 0.4s ease;
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1), -8px -8px 16px #ffffff;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             min-width: 320px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(26, 58, 143, 0.1);
         }
         
+        /* EFECTO HOVER MEJORADO - Sombra más sólida y definida */
         .logo-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 12px 12px 24px #c9c9c9, -12px -12px 24px #ffffff;
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 
+                0 20px 40px rgba(26, 58, 143, 0.4),
+                0 10px 20px rgba(0, 0, 0, 0.25),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+            border-color: rgba(26, 58, 143, 0.3);
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+        }
+        
+        /* Efecto de brillo interior en hover */
+        .logo-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(42, 91, 215, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            border-radius: 15px;
+        }
+        
+        .logo-item:hover::after {
+            opacity: 1;
         }
         
         .logo-img {
@@ -88,13 +116,19 @@
             object-fit: contain;
             margin-bottom: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.15));
+            border-radius: 8px;
+            background: white;
+            padding: 5px;
         }
         
+        /* Hover para la imagen - Sombra más intensa */
         .logo-img:hover {
-            transform: scale(1.08);
-            filter: drop-shadow(0 6px 10px rgba(42, 91, 215, 0.3));
+            transform: scale(1.12);
+            filter: 
+                drop-shadow(0 10px 15px rgba(26, 58, 143, 0.5))
+                drop-shadow(0 5px 8px rgba(26, 58, 143, 0.3));
         }
         
         .logo-text {
@@ -102,6 +136,7 @@
             color: #1a3a8f;
             font-weight: bold;
             margin: 15px 0 5px 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
         
         .logo-descripcion {
@@ -109,6 +144,24 @@
             color: #666;
             line-height: 1.4;
             margin-top: 5px;
+        }
+        
+        /* ESTILOS PARA LAS IMÁGENES DE LOGO */
+        .logo-img {
+            /* Asegurar que las imágenes se vean bien */
+            object-fit: contain;
+            object-position: center;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        /* Contenedor de imagen con fondo para mejor visibilidad */
+        .logo-img-container {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
         /* LEMA */
@@ -153,11 +206,11 @@
             gap: 10px;
         }
         
-        /* PLACEHOLDER */
+        /* PLACEHOLDER MEJORADO */
         .img-placeholder {
             width: 180px;
             height: 180px;
-            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            background: linear-gradient(135deg, #f5f5f5, #e9e9e9);
             border-radius: 12px;
             display: flex;
             flex-direction: column;
@@ -165,20 +218,38 @@
             align-items: center;
             margin: 0 auto 20px;
             color: #666;
-            border: 3px dashed #999;
+            border: 3px dashed #bbb;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
         }
         
         .img-placeholder:hover {
-            background: linear-gradient(135deg, #e0e0e0, #d0d0d0);
+            background: linear-gradient(135deg, #e8e8e8, #dcdcdc);
             border-color: #2a5bd7;
+            box-shadow: 
+                inset 0 0 15px rgba(0, 0, 0, 0.1),
+                0 5px 15px rgba(42, 91, 215, 0.2);
         }
         
         .img-placeholder .icon {
-            font-size: 60px;
-            margin-bottom: 15px;
+            font-size: 48px;
+            margin-bottom: 10px;
             color: #999;
+            font-weight: bold;
+        }
+        
+        /* ESTILO PARA ENLACE DE VANEDUC */
+        .vaneduc-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s ease;
+        }
+        
+        .vaneduc-link:hover {
+            transform: translateY(-5px);
         }
         
         /* RESPONSIVE */
@@ -235,12 +306,29 @@
                 height: 150px;
             }
             
+            /* Ajustar efectos hover para móvil */
+            .logo-item:hover {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 
+                    0 15px 30px rgba(26, 58, 143, 0.3),
+                    0 8px 15px rgba(0, 0, 0, 0.2);
+            }
+            
+            .logo-img:hover {
+                transform: scale(1.08);
+            }
+            
             .lema p {
                 font-size: 22px;
             }
             
             .instrucciones p {
                 font-size: 18px;
+            }
+            
+            .img-placeholder {
+                width: 150px;
+                height: 150px;
             }
         }
     </style>
@@ -264,34 +352,35 @@
                         <div class="icon">UAI</div>
                         <span>Logo UAI</span>
                     </div>
-                    <!-- Imagen real -->
-                    <img src="img/logo_uai.png" alt="UAI" class="logo-img" id="logoUAI-img">
+                    <!-- Contenedor para la imagen -->
+                    <div class="logo-img-container">
+                        <!-- Imagen real -->
+                        <img src="img/logo_uai.png" alt="UAI" class="logo-img" id="logoUAI-img">
+                    </div>
                 </div>
-                <div class="logo-text">UAI</div>
-                <div class="logo-descripcion">Universidad Abierta<br>Interamericana</div>
             </div>
             
             <!-- LOGO VANEDUC -->
             <div class="logo-item">
-                <a href="colegios.html" class="vaneduc-link" style="text-decoration: none; color: inherit;">
+                <a href="colegios.html" class="vaneduc-link">
                     <div id="logoVaneduc-container">
                         <!-- Placeholder que se muestra si la imagen no carga -->
                         <div class="img-placeholder" id="vaneduc-placeholder" style="display: none;">
                             <div class="icon">VANEDUC</div>
                             <span>Logo VANEDUC</span>
                         </div>
-                        <!-- Imagen real -->
-                        <img src="img/logo_vaneduc.png" alt="VANEDUC" class="logo-img" id="logoVaneduc-img">
+                        <!-- Contenedor para la imagen -->
+                        <div class="logo-img-container">
+                            <!-- Imagen real -->
+                            <img src="img/logo_vaneduc.png" alt="VANEDUC" class="logo-img" id="logoVaneduc-img">
+                        </div>
                     </div>
-                    <div class="logo-text">VANEDUC</div>
                 </a>
             </div>
         </div>
         
         <!-- LEMA -->
-        <div class="lema">
-            <p>EXCELLENTIA IN EDUCATIONE</p>
-        </div>
+        
         
         <!-- INSTRUCCIONES -->
         <div class="instrucciones">
@@ -333,13 +422,24 @@
                         // Si la imagen existe, mostrar la imagen real
                         imgElement.style.display = 'block';
                         if (placeholder) placeholder.style.display = 'none';
+                        // Aplicar filtro inicial
+                        imgElement.style.filter = 'drop-shadow(0 6px 8px rgba(0, 0, 0, 0.15))';
                     };
                     testImg.onerror = function() {
                         console.log("❌ " + imgConfig.nombre + " - NO ENCONTRADA");
                         console.log("   Ruta: " + imgConfig.ruta);
                         // Si no existe, mostrar placeholder
                         imgElement.style.display = 'none';
-                        if (placeholder) placeholder.style.display = 'flex';
+                        if (placeholder) {
+                            placeholder.style.display = 'flex';
+                            // Añadir efecto hover al placeholder
+                            placeholder.addEventListener('mouseenter', function() {
+                                this.style.boxShadow = 'inset 0 0 15px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(42, 91, 215, 0.3)';
+                            });
+                            placeholder.addEventListener('mouseleave', function() {
+                                this.style.boxShadow = 'inset 0 0 10px rgba(0, 0, 0, 0.05)';
+                            });
+                        }
                         
                         // Mostrar ayuda específica
                         mostrarAyudaImagen(imgConfig.ruta);
@@ -349,7 +449,9 @@
                     // Manejar error en la imagen real
                     imgElement.onerror = function() {
                         this.style.display = 'none';
-                        if (placeholder) placeholder.style.display = 'flex';
+                        if (placeholder) {
+                            placeholder.style.display = 'flex';
+                        }
                     };
                 }
             });
