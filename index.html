@@ -34,7 +34,7 @@
             color: #333;
         }
         
-        /* TÍTULO PRINCIPAL */
+        /* TÍTULO PRINCIPAL CON GIF */
         .titulo-principal {
             margin-bottom: 50px;
             padding-bottom: 25px;
@@ -42,20 +42,48 @@
             position: relative;
         }
         
+        .titulo-contenedor {
+            position: relative;
+            display: inline-block;
+            padding: 20px 40px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: linear-gradient(rgba(26, 58, 143, 0.9), rgba(42, 91, 215, 0.9));
+        }
+        
+        /* GIF DETRÁS DEL TÍTULO */
+        .gif-titulo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.2;
+            z-index: 1;
+            border-radius: 15px;
+        }
+        
+        .titulo-texto {
+            position: relative;
+            z-index: 2;
+        }
+        
         .titulo-principal h1 {
             font-size: 52px;
-            color: #1a3a8f;
+            color: white;
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
         }
         
         .titulo-principal h2 {
             font-size: 40px;
-            color: #2a5bd7;
+            color: #ffd700;
             font-weight: 600;
             margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         /* LOGOS - ESTILOS MEJORADOS */
@@ -273,6 +301,10 @@
             .logo-item {
                 min-width: 280px;
             }
+            
+            .titulo-contenedor {
+                padding: 15px 30px;
+            }
         }
         
         @media (max-width: 768px) {
@@ -330,16 +362,29 @@
                 width: 150px;
                 height: 150px;
             }
+            
+            .titulo-contenedor {
+                padding: 10px 20px;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <!-- TÍTULO PRINCIPAL -->
+        <!-- TÍTULO PRINCIPAL CON GIF -->
         <div class="titulo-principal">
-            <h1>ESTADÍSTICAS</h1>
-            <h2>MOROSIDAD</h2>
+            <div class="titulo-contenedor">
+                <!-- AQUÍ PONES LA RUTA DE TU GIF -->
+                <!-- REEMPLAZA "ruta/de/tu/gif.gif" CON LA RUTA DE TU ARCHIVO GIF -->
+                <img src="img/estadisticas.gif" alt="GIF de estadísticas" class="gif-titulo" id="miGifPersonalizado">
+                
+                <!-- Texto del título -->
+                <div class="titulo-texto">
+                    <h1>ESTADÍSTICAS</h1>
+                    <h2>MOROSIDAD</h2>
+                </div>
+            </div>
         </div>
 
         <!-- LOGOS UAI Y VANEDUC -->
@@ -379,8 +424,7 @@
             </div>
         </div>
         
-        <!-- LEMA -->
-        
+       
         
         <!-- INSTRUCCIONES -->
         <div class="instrucciones">
@@ -392,6 +436,24 @@
         // Función para verificar y manejar imágenes
         function configurarImagenes() {
             console.log("=== CONFIGURANDO IMÁGENES ===");
+            
+            // Verificar el GIF del título
+            const miGif = document.getElementById('miGifPersonalizado');
+            if (miGif) {
+                // Verificar si el GIF existe
+                const testGif = new Image();
+                testGif.onload = function() {
+                    console.log("✅ GIF del título - EXISTE");
+                    miGif.style.display = 'block';
+                };
+                testGif.onerror = function() {
+                    console.log("❌ GIF del título - NO ENCONTRADO");
+                    console.log("   Ruta actual: " + miGif.src);
+                    console.log("💡 Reemplaza 'ruta/de/tu/gif.gif' con la ruta real de tu GIF");
+                    miGif.style.display = 'none';
+                };
+                testGif.src = miGif.src;
+            }
             
             // Lista de imágenes a verificar
             const imagenes = [
@@ -434,10 +496,10 @@
                             placeholder.style.display = 'flex';
                             // Añadir efecto hover al placeholder
                             placeholder.addEventListener('mouseenter', function() {
-                                this.style.boxShadow = 'inset 0 0 15px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(42, 91, 215, 0.3)';
+                                this.style.boxShadow = 'insect 0 0 15px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(42, 91, 215, 0.3)';
                             });
                             placeholder.addEventListener('mouseleave', function() {
-                                this.style.boxShadow = 'inset 0 0 10px rgba(0, 0, 0, 0.05)';
+                                this.style.boxShadow = 'insect 0 0 10px rgba(0, 0, 0, 0.05)';
                             });
                         }
                         
@@ -519,11 +581,10 @@
             configurarInteractividad();
             
             // Información útil para depuración
-            console.log("ℹ️ Para compartir esta página:");
-            console.log("   1. Sube TODA la carpeta a OneDrive");
-            console.log("   2. Comparte index.html como 'Cualquier persona'");
-            console.log("   3. Usa: https://htmlpreview.github.io/?[TU_ENLACE]");
-            console.log("   4. Asegúrate que colegios.html esté en la misma carpeta");
+            console.log("ℹ️ Para cambiar el GIF del título:");
+            console.log("   Encuentra esta línea en el código HTML:");
+            console.log("   <img src=img/estafisticas.gif alt=\"GIF de estadísticas\" class=\"gif-titulo\" id=\"miGifPersonalizado\">");
+            console.log("   Cambia \"ruta/de/tu/gif.gif\" por la ruta real de tu GIF");
             
             // Mostrar año actual si hay un elemento para ello
             const yearElement = document.getElementById('currentYear');
