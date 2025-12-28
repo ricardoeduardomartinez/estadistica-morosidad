@@ -34,7 +34,7 @@
             color: #333;
         }
         
-        /* TÍTULO PRINCIPAL CON GIF */
+        /* TÍTULO PRINCIPAL */
         .titulo-principal {
             margin-bottom: 50px;
             padding-bottom: 25px;
@@ -51,15 +51,15 @@
             background: linear-gradient(rgba(26, 58, 143, 0.9), rgba(42, 91, 215, 0.9));
         }
         
-        /* GIF DETRÁS DEL TÍTULO */
-        .gif-titulo {
+        /* GIF DE FONDO - AQUÍ VA TU GIF */
+        .gif-fondo {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.2;
+            opacity: 0.3; /* Puedes ajustar la transparencia */
             z-index: 1;
             border-radius: 15px;
         }
@@ -375,9 +375,11 @@
         <!-- TÍTULO PRINCIPAL CON GIF -->
         <div class="titulo-principal">
             <div class="titulo-contenedor">
-                <!-- AQUÍ PONES LA RUTA DE TU GIF -->
-                <!-- REEMPLAZA "ruta/de/tu/gif.gif" CON LA RUTA DE TU ARCHIVO GIF -->
-                <img src="img/estadisticas.gif" alt="GIF de estadísticas" class="gif-titulo" id="miGifPersonalizado">
+                <!-- AQUÍ VA TU GIF - REEMPLAZA LA RUTA -->
+                <!-- EJEMPLOS: -->
+                <!-- GIF local: "gifs/mi-gif.gif" -->
+                <!-- GIF de internet: "https://media.giphy.com/media/ejemplo.gif" -->
+                <img src="AQUÍ-PON-LA-RUTA-DE-TU-GIF.gif" alt="GIF animado" class="gif-fondo">
                 
                 <!-- Texto del título -->
                 <div class="titulo-texto">
@@ -424,7 +426,10 @@
             </div>
         </div>
         
-       
+        <!-- LEMA -->
+        <div class="lema">
+            <p><i class="fas fa-chart-line"></i> EXCELLENTIA IN EDUCATIONE <i class="fas fa-chart-bar"></i></p>
+        </div>
         
         <!-- INSTRUCCIONES -->
         <div class="instrucciones">
@@ -438,21 +443,12 @@
             console.log("=== CONFIGURANDO IMÁGENES ===");
             
             // Verificar el GIF del título
-            const miGif = document.getElementById('miGifPersonalizado');
-            if (miGif) {
-                // Verificar si el GIF existe
-                const testGif = new Image();
-                testGif.onload = function() {
-                    console.log("✅ GIF del título - EXISTE");
-                    miGif.style.display = 'block';
-                };
-                testGif.onerror = function() {
-                    console.log("❌ GIF del título - NO ENCONTRADO");
-                    console.log("   Ruta actual: " + miGif.src);
-                    console.log("💡 Reemplaza 'ruta/de/tu/gif.gif' con la ruta real de tu GIF");
-                    miGif.style.display = 'none';
-                };
-                testGif.src = miGif.src;
+            const gifTitulo = document.querySelector('.gif-fondo');
+            if (gifTitulo) {
+                console.log("✅ GIF configurado en: " + gifTitulo.src);
+                
+                // Si quieres ajustar la opacidad del GIF
+                // gifTitulo.style.opacity = '0.4'; // Cambia este valor entre 0.1 y 0.9
             }
             
             // Lista de imágenes a verificar
@@ -484,27 +480,14 @@
                         // Si la imagen existe, mostrar la imagen real
                         imgElement.style.display = 'block';
                         if (placeholder) placeholder.style.display = 'none';
-                        // Aplicar filtro inicial
-                        imgElement.style.filter = 'drop-shadow(0 6px 8px rgba(0, 0, 0, 0.15))';
                     };
                     testImg.onerror = function() {
                         console.log("❌ " + imgConfig.nombre + " - NO ENCONTRADA");
-                        console.log("   Ruta: " + imgConfig.ruta);
                         // Si no existe, mostrar placeholder
                         imgElement.style.display = 'none';
                         if (placeholder) {
                             placeholder.style.display = 'flex';
-                            // Añadir efecto hover al placeholder
-                            placeholder.addEventListener('mouseenter', function() {
-                                this.style.boxShadow = 'insect 0 0 15px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(42, 91, 215, 0.3)';
-                            });
-                            placeholder.addEventListener('mouseleave', function() {
-                                this.style.boxShadow = 'insect 0 0 10px rgba(0, 0, 0, 0.05)';
-                            });
                         }
-                        
-                        // Mostrar ayuda específica
-                        mostrarAyudaImagen(imgConfig.ruta);
                     };
                     testImg.src = imgConfig.ruta;
                     
@@ -519,18 +502,9 @@
             });
         }
         
-        // Mostrar ayuda para imágenes faltantes
-        function mostrarAyudaImagen(ruta) {
-            const nombreArchivo = ruta.split('/').pop();
-            console.log("💡 Para solucionar:");
-            console.log("   1. Asegúrate de tener la imagen: " + nombreArchivo);
-            console.log("   2. En la carpeta 'img/' junto a index.html");
-            console.log("   3. Nombre exacto: " + nombreArchivo);
-        }
-        
         // Configurar interactividad
         function configurarInteractividad() {
-            // Hacer que el logo UAI sea clickeable (redirige a colegios.html)
+            // Hacer que el logo UAI sea clickeable
             const logoUAI = document.getElementById('logoUAI-img');
             const placeholderUAI = document.getElementById('uai-placeholder');
             const itemUAI = document.getElementById('logoUAI-item');
@@ -541,56 +515,23 @@
                     window.location.href = 'colegios.html';
                 });
             }
-            
-            if (logoUAI) {
-                logoUAI.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Evitar doble ejecución
-                    window.location.href = 'colegios.html';
-                });
-            }
-            
-            if (placeholderUAI) {
-                placeholderUAI.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    window.location.href = 'colegios.html';
-                });
-            }
-            
-            // Verificar que colegios.html exista
-            const linkColegios = document.querySelector('a[href="colegios.html"]');
-            if (linkColegios) {
-                // Prueba silenciosa para verificar que existe
-                fetch('colegios.html')
-                    .then(response => {
-                        if (!response.ok) {
-                            console.warn("⚠️ colegios.html no encontrado o no accesible");
-                        }
-                    })
-                    .catch(error => {
-                        console.warn("⚠️ No se pudo verificar colegios.html:", error.message);
-                    });
-            }
         }
         
         // Inicializar cuando la página cargue
         document.addEventListener('DOMContentLoaded', function() {
             console.log("=== PÁGINA DE ESTADÍSTICAS DE MOROSIDAD ===");
-            console.log("Inicializando...");
             
             configurarImagenes();
             configurarInteractividad();
             
-            // Información útil para depuración
-            console.log("ℹ️ Para cambiar el GIF del título:");
-            console.log("   Encuentra esta línea en el código HTML:");
-            console.log("   <img src=img/estafisticas.gif alt=\"GIF de estadísticas\" class=\"gif-titulo\" id=\"miGifPersonalizado\">");
-            console.log("   Cambia \"ruta/de/tu/gif.gif\" por la ruta real de tu GIF");
-            
-            // Mostrar año actual si hay un elemento para ello
-            const yearElement = document.getElementById('currentYear');
-            if (yearElement) {
-                yearElement.textContent = new Date().getFullYear();
-            }
+            // Instrucciones para el GIF
+            console.log("💡 INSTRUCCIONES PARA EL GIF:");
+            console.log("   1. Sube tu archivo GIF a tu repositorio");
+            console.log("   2. En la línea 192, cambia 'AQUÍ-PON-LA-RUTA-DE-TU-GIF.gif'");
+            console.log("   3. Ejemplos de rutas:");
+            console.log("      - 'gifs/estadisticas.gif' (si está en carpeta gifs/)");
+            console.log("      - 'mi-gif.gif' (si está en la raíz)");
+            console.log("      - 'https://media.giphy.com/media/ejemplo.gif' (URL externa)");
         });
     </script>
 </body>
