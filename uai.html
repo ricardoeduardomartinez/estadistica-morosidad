@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universidad Abierta Interamericana - UAI</title>
+    <style>
+        /* ESTILOS BÁSICOS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a0a1a 0%, #881636 30%, #6a1028 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 
+                0 20px 50px rgba(136, 22, 54, 0.4),
+                0 10px 30px rgba(0, 0, 0, 0.3);
+            color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Efecto de brillo en el contenedor */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* TÍTULO PRINCIPAL */
+        .titulo-principal {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .titulo-contenedor {
+            position: relative;
+            display: inline-block;
+            padding: 25px 50px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #6a1028 0%, #881636 50%, #a81c42 100%);
+            box-shadow: 
+                0 10px 30px rgba(106, 16, 40, 0.5),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .titulo-texto {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .titulo-principal h1 {
+            font-size: 42px;
+            color: white;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 
+                3px 3px 6px rgba(0, 0, 0, 0.5),
+                1px 1px 2px rgba(255, 255, 255, 0.2);
+            font-weight: 800;
+        }
+        
+        .titulo-principal h2 {
+            font-size: 32px;
+            color: #ffd700;
+            font-weight: 700;
+            margin-top: 10px;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.5),
+                1px 1px 2px rgba(255, 215, 0, 0.3);
+            font-style: italic;
+        }
+        
+        /* LOGO UAI GRANDE */
+        .logo-uai-grande {
+            margin: 40px 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo-uai-grande img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            padding: 25px;
+            box-shadow: 
+                0 15px 35px rgba(136, 22, 54, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.2),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid #881636;
+        }
+        
+        .logo-uai-grande img:hover {
+            transform: scale(1.08) rotate(5deg);
+            box-shadow: 
+                0 25px 50px rgba(136, 22, 54, 0.6),
+                0 10px 25px rgba(0, 0, 0, 0.3),
+                inset 0 -3px 8px rgba(0, 0, 0, 0.15);
+            border-color: #c2244e;
+        }
+        
+        /* ACCESOS PRINCIPALES */
+        .accesos-container {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .acceso-item {
+            text-align: center;
+            padding: 40px 35px;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            box-shadow: 
+                10px 10px 20px rgba(136, 22, 54, 0.15),
+                -5px -5px 15px #ffffff,
+                inset 0 0 0 1px rgba(136, 22, 54, 0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 380px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        /* Efecto de brillo interior */
+        .acceso-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(136, 22, 54, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 20px;
+        }
+        
+        /* EFECTO HOVER MEJORADO */
+        .acceso-item:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 
+                0 35px 70px rgba(136, 22, 54, 0.4),
+                0 20px 40px rgba(0, 0, 0, 0.25),
+                inset 0 0 0 2px rgba(255, 255, 255, 0.9);
+            background: linear-gradient(145deg, #ffffff, #ffffff);
+        }
+        
+        .acceso-item:hover::before {
+            opacity: 1;
+        }
+        
+        .acceso-icono {
+            font-size: 70px;
+            margin-bottom: 25px;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .acceso-item:hover .acceso-icono {
+            transform: scale(1.15) translateY(-5px);
+            filter: drop-shadow(0 5px 10px rgba(136, 22, 54, 0.3));
+        }
+        
+        .acceso-titulo {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 1px;
+        }
+        
+        .acceso-descripcion {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* COLORES DIFERENTES PARA CADA ACCESO */
+        .acceso-universidad {
+            border-top: 8px solid #6a1028;
+        }
+        
+        .acceso-universidad .acceso-icono {
+            color: #6a1028;
+            background: linear-gradient(135deg, #6a1028, #881636);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .acceso-universidad .acceso-titulo {
+            color: #6a1028;
+            text-shadow: 1px 1px 2px rgba(106, 16, 40, 0.2);
+        }
+        
+        .acceso-universidad .acceso-descripcion {
+            color: #555;
+        }
+        
+        .acceso-universidad:hover .acceso-icono {
+            background: linear-gradient(135deg, #881636, #c2244e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .acceso-universidad:hover .acceso-titulo {
+            color: #881636;
+        }
+        
+        .acceso-posgrado {
+            border-top: 8px solid #a81c42;
+        }
+        
+        .acceso-posgrado .acceso-icono {
+            color: #a81c42;
+            background: linear-gradient(135deg, #a81c42, #c2244e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .acceso-posgrado .acceso-titulo {
+            color: #a81c42;
+            text-shadow: 1px 1px 2px rgba(168, 28, 66, 0.2);
+        }
+        
+        .acceso-posgrado .acceso-descripcion {
+            color: #555;
+        }
+        
+        .acceso-posgrado:hover .acceso-icono {
+            background: linear-gradient(135deg, #c2244e, #e8376e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .acceso-posgrado:hover .acceso-titulo {
+            color: #c2244e;
+        }
+        
+        /* BOTÓN VOLVER */
+        .volver {
+            display: inline-block;
+            background: linear-gradient(135deg, #6a1028 0%, #881636 50%, #a81c42 100%);
+            color: white;
+            padding: 16px 40px;
+            text-decoration: none;
+            border-radius: 12px;
+            margin-top: 40px;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 
+                0 10px 25px rgba(136, 22, 54, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 1px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .volver:hover {
+            background: linear-gradient(135deg, #881636 0%, #a81c42 50%, #c2244e 100%);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 20px 40px rgba(136, 22, 54, 0.6),
+                0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .volver:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+        
+        .volver i {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        
+        /* INSTRUCCIONES */
+        .instrucciones {
+            margin: 40px auto 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f0f3, #f0e0e6);
+            border-radius: 15px;
+            border-left: 8px solid #881636;
+            max-width: 750px;
+            box-shadow: 
+                0 8px 25px rgba(136, 22, 54, 0.15),
+                inset 0 1px 3px rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .instrucciones p {
+            color: #6a1028;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .instrucciones i {
+            color: #881636;
+            font-size: 24px;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .container {
+                max-width: 90%;
+                padding: 40px 30px;
+            }
+            
+            .acceso-item {
+                width: 340px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .titulo-principal h1 {
+                font-size: 38px;
+            }
+            
+            .titulo-principal h2 {
+                font-size: 28px;
+            }
+            
+            .accesos-container {
+                gap: 40px;
+            }
+            
+            .acceso-item {
+                width: 320px;
+                padding: 35px 30px;
+            }
+            
+            .logo-uai-grande img {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .acceso-icono {
+                font-size: 65px;
+            }
+            
+            .acceso-titulo {
+                font-size: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                background: linear-gradient(135deg, #5a0c1f 0%, #881636 50%, #6a1028 100%);
+            }
+            
+            .container {
+                padding: 35px 25px;
+                border-radius: 20px;
+            }
+            
+            .titulo-principal h1 {
+                font-size: 32px;
+                letter-spacing: 2px;
+            }
+            
+            .titulo-principal h2 {
+                font-size: 24px;
+            }
+            
+            .titulo-contenedor {
+                padding: 20px 30px;
+            }
+            
+            .accesos-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 35px;
+            }
+            
+            .acceso-item {
+                width: 100%;
+                max-width: 450px;
+                padding: 35px 30px;
+            }
+            
+            /* Ajustar efectos hover para móvil */
+            .acceso-item:hover {
+                transform: translateY(-12px) scale(1.03);
+                box-shadow: 
+                    0 25px 50px rgba(136, 22, 54, 0.35),
+                    0 15px 30px rgba(0, 0, 0, 0.2);
+            }
+            
+            .logo-uai-grande img {
+                width: 160px;
+                height: 160px;
+                padding: 20px;
+            }
+            
+            .logo-uai-grande img:hover {
+                transform: scale(1.05) rotate(3deg);
+            }
+            
+            .acceso-icono {
+                font-size: 60px;
+            }
+            
+            .acceso-titulo {
+                font-size: 28px;
+            }
+            
+            .acceso-descripcion {
+                font-size: 17px;
+            }
+            
+            .volver {
+                padding: 14px 35px;
+                font-size: 17px;
+            }
+            
+            .instrucciones {
+                padding: 20px;
+            }
+            
+            .instrucciones p {
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                border-radius: 18px;
+            }
+            
+            .titulo-principal h1 {
+                font-size: 28px;
+                letter-spacing: 1px;
+            }
+            
+            .titulo-principal h2 {
+                font-size: 22px;
+            }
+            
+            .titulo-contenedor {
+                padding: 18px 25px;
+            }
+            
+            .acceso-item {
+                padding: 30px 25px;
+            }
+            
+            .acceso-icono {
+                font-size: 55px;
+            }
+            
+            .acceso-titulo {
+                font-size: 26px;
+            }
+            
+            .acceso-descripcion {
+                font-size: 16px;
+            }
+            
+            .logo-uai-grande img {
+                width: 140px;
+                height: 140px;
+                padding: 18px;
+            }
+            
+            .volver {
+                padding: 14px 30px;
+                font-size: 16px;
+            }
+            
+            .instrucciones {
+                padding: 18px;
+            }
+            
+            .instrucciones p {
+                font-size: 16px;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .titulo-principal h1 {
+                font-size: 24px;
+            }
+            
+            .titulo-principal h2 {
+                font-size: 20px;
+            }
+            
+            .acceso-titulo {
+                font-size: 24px;
+            }
+            
+            .acceso-icono {
+                font-size: 50px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- TÍTULO PRINCIPAL -->
+        <div class="titulo-principal">
+            <div class="titulo-contenedor">
+                <div class="titulo-texto">
+                    <h1>UNIVERSIDAD ABIERTA INTERAMERICANA</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- INSTRUCCIONES -->
+        <div class="instrucciones">
+            <p>
+                <i class="fas fa-hand-point-up"></i>
+                Selecciona el tipo de institución para acceder a las estadísticas
+                <i class="fas fa-chart-line"></i>
+            </p>
+        </div>
+
+        <!-- ACCESOS PRINCIPALES -->
+        <div class="accesos-container">
+            <!-- ACCESO UNIVERSIDAD -->
+            <a href="uai_universidades.html" class="acceso-item acceso-universidad">
+                <div class="acceso-icono">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="acceso-titulo">UNIVERSIDAD</div>
+                <div class="acceso-descripcion">
+                    Accede a las estadísticas de morosidad de las distintas sedes universitarias de la UAI. 
+                    Información actualizada de todas las facultades y carreras.
+                </div>
+            </a>
+            
+            <!-- ACCESO POSGRADO/EXTENSIÓN -->
+            <a href="uai-posgrado.html" class="acceso-item acceso-posgrado">
+                <div class="acceso-icono">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="acceso-titulo">POSGRADO / EXTENSIÓN</div>
+                <div class="acceso-descripcion">
+                    Consulta las estadísticas de los programas de posgrado, especializaciones, 
+                    maestrías, doctorados y cursos de extensión universitaria.
+                </div>
+            </a>
+        </div>
+        
+        <!-- BOTÓN VOLVER -->
+        <button class="volver" id="btnVolver">
+            <i class="fas fa-arrow-left"></i> Volver a Estadísticas de Morosidad
+        </button>
+    </div>
+
+    <script>
+        // Función para verificar y manejar imágenes
+        function configurarImagenes() {
+            console.log("=== CONFIGURANDO PÁGINA UAI ===");
+            
+            // Verificar el logo UAI
+            const logoUAI = document.getElementById('logoUAI');
+            if (logoUAI) {
+                const testImg = new Image();
+                testImg.onload = function() {
+                    console.log("✅ Logo UAI - EXISTE");
+                    // Añadir animación al cargar
+                    logoUAI.style.opacity = '0';
+                    logoUAI.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        logoUAI.style.transition = 'opacity 0.6s, transform 0.6s';
+                        logoUAI.style.opacity = '1';
+                        logoUAI.style.transform = 'scale(1)';
+                    }, 300);
+                };
+                testImg.onerror = function() {
+                    console.log("❌ Logo UAI - NO ENCONTRADO");
+                    console.log("   Ruta: " + logoUAI.src);
+                    console.log("💡 Asegúrate de tener el archivo 'logo_uai.png' en la carpeta 'img/'");
+                    // Mostrar placeholder
+                    const placeholder = document.createElement('div');
+                    placeholder.innerHTML = `
+                        <div style="
+                            width: 200px; 
+                            height: 200px; 
+                            border-radius: 50%; 
+                            background: linear-gradient(135deg, #6a1028, #881636, #a81c42);
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center; 
+                            color: white; 
+                            font-size: 24px; 
+                            font-weight: bold;
+                            margin: 0 auto;
+                            box-shadow: 0 15px 35px rgba(136, 22, 54, 0.4);
+                        ">
+                            UAI
+                        </div>
+                    `;
+                    logoUAI.parentNode.replaceChild(placeholder, logoUAI);
+                };
+                testImg.src = logoUAI.src;
+            }
+        }
+        
+        // Configurar interactividad
+        function configurarInteractividad() {
+            // Botón volver
+            const btnVolver = document.getElementById('btnVolver');
+            if (btnVolver) {
+                btnVolver.addEventListener('click', function() {
+                    // Animación al hacer clic
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 150);
+                });
+                
+                // Efecto hover mejorado
+                btnVolver.addEventListener('mouseenter', function() {
+                    this.style.transition = 'all 0.3s ease';
+                });
+            }
+            
+            // Verificar que los archivos de destino existan
+            const links = document.querySelectorAll('.acceso-item');
+            links.forEach(link => {
+                // Prueba silenciosa para verificar que existen
+                fetch(link.href)
+                    .then(response => {
+                        if (!response.ok) {
+                            console.warn("⚠️ " + link.href + " no encontrado o no accesible");
+                        }
+                    })
+                    .catch(error => {
+                        console.warn("⚠️ No se pudo verificar " + link.href + ":", error.message);
+                    });
+                
+                // Efecto de sonido virtual
+                link.addEventListener('click', function(e) {
+                    console.log("🔗 Navegando a: " + this.href);
+                    
+                    // Animación de clic
+                    this.style.transform = 'translateY(-10px) scale(1.03)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-20px) scale(1.05)';
+                    }, 50);
+                });
+            });
+        }
+        
+        // Efectos de partículas para el fondo
+        function crearEfectoParticulas() {
+            const colors = ['#6a1028', '#881636', '#a81c42', '#c2244e'];
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.opacity = Math.random() * 0.3 + 0.1;
+                particle.style.zIndex = '0';
+                particle.style.pointerEvents = 'none';
+                document.body.appendChild(particle);
+                
+                // Animación
+                animateParticle(particle);
+            }
+        }
+        
+        function animateParticle(particle) {
+            let x = parseFloat(particle.style.left);
+            let y = parseFloat(particle.style.top);
+            let xSpeed = (Math.random() - 0.5) * 0.3;
+            let ySpeed = (Math.random() - 0.5) * 0.3;
+            
+            function move() {
+                x += xSpeed;
+                y += ySpeed;
+                
+                // Rebotar en los bordes
+                if (x <= 0 || x >= 100) xSpeed *= -1;
+                if (y <= 0 || y >= 100) ySpeed *= -1;
+                
+                particle.style.left = x + 'vw';
+                particle.style.top = y + 'vh';
+                
+                requestAnimationFrame(move);
+            }
+            
+            move();
+        }
+        
+        // Inicializar cuando la página cargue
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("=== PÁGINA UAI - ACCESOS PRINCIPALES ===");
+            console.log("🎨 Color institucional: #881636");
+            console.log("🎨 Variantes: #6a1028 (oscuro), #a81c42 (claro), #c2244e (acento)");
+            
+            configurarImagenes();
+            configurarInteractividad();
+            crearEfectoParticulas();
+            
+            // Información útil para depuración
+            console.log("ℹ️ Próximos pasos:");
+            console.log("   1. Crear 'uai-universidad.html' para el acceso Universidad");
+            console.log("   2. Crear 'uai-posgrado.html' para el acceso Posgrado/Extensión");
+            console.log("   3. Cada una tendrá sus propias sedes/carreras");
+            
+            // Efecto de carga inicial
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(30px) scale(0.95)';
+            
+            setTimeout(() => {
+                container.style.transition = 'opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0) scale(1)';
+                
+                // Animación secuencial para los accesos
+                const accesos = document.querySelectorAll('.acceso-item');
+                accesos.forEach((acceso, index) => {
+                    setTimeout(() => {
+                        acceso.style.opacity = '0';
+                        acceso.style.transform = 'translateY(30px) scale(0.9)';
+                        acceso.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        
+                        setTimeout(() => {
+                            acceso.style.opacity = '1';
+                            acceso.style.transform = 'translateY(0) scale(1)';
+                        }, 100);
+                    }, index * 300);
+                });
+                
+                // Animación del botón volver
+                const volverBtn = document.getElementById('btnVolver');
+                if (volverBtn) {
+                    setTimeout(() => {
+                        volverBtn.style.opacity = '0';
+                        volverBtn.style.transform = 'translateY(20px)';
+                        volverBtn.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        
+                        setTimeout(() => {
+                            volverBtn.style.opacity = '1';
+                            volverBtn.style.transform = 'translateY(0)';
+                        }, 50);
+                    }, 600);
+                }
+            }, 200);
+            
+            // Efecto de brillo intermitente sutil
+            const tituloContenedor = document.querySelector('.titulo-contenedor');
+            setInterval(() => {
+                tituloContenedor.style.boxShadow = 
+                    '0 10px 30px rgba(168, 28, 66, 0.6), ' +
+                    'inset 0 1px 1px rgba(255, 255, 255, 0.3)';
+                
+                setTimeout(() => {
+                    tituloContenedor.style.boxShadow = 
+                        '0 10px 30px rgba(106, 16, 40, 0.5), ' +
+                        'inset 0 1px 1px rgba(255, 255, 255, 0.3)';
+                }, 800);
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

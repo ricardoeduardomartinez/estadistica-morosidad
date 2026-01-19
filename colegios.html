@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas por Colegio - VANEDUC</title>
+    <style>
+        /* ESTILOS BÁSICOS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        
+        /* CABECERA */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #1a3a8f;
+        }
+        
+        .titulo-pagina {
+            font-size: 36px;
+            color: #1a3a8f;
+            margin-bottom: 10px;
+        }
+        
+        .subtitulo {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        
+        .volver {
+            display: inline-block;
+            background-color: #1a3a8f;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .volver:hover {
+            background-color: #2a5bd7;
+        }
+        
+        /* CARRUSEL 3D */
+        .carrusel-3d-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 500px;
+            margin: 40px auto 60px;
+            perspective: 1200px;
+        }
+        
+        .carrusel-3d {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+        }
+        
+        .logo-item {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            left: 50%;
+            top: 50%;
+            margin-left: -125px;
+            margin-top: -125px;
+            border-radius: 15px;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: transform 0.5s, opacity 0.5s, box-shadow 0.5s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .logo-item:hover {
+            transform: scale(1.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+        }
+        
+        .logo-item.active {
+            border: 4px solid #1d6f42;
+            box-shadow: 0 0 25px rgba(29, 111, 66, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+        
+        .logo-item img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .logo-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .logo-item span {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a3a8f;
+            text-align: center;
+            line-height: 1.3;
+            transition: color 0.3s;
+        }
+        
+        .logo-item:hover span {
+            color: #2a5bd7;
+        }
+        
+        .excel-indicator {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #1d6f42;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .logo-item:hover .excel-indicator {
+            background-color: #2a8c5a;
+            transform: scale(1.1);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .click-instruction {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .logo-item.active .click-instruction {
+            opacity: 1;
+        }
+        
+        /* Controles del carrusel 3D */
+        .carrusel-controls-3d {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            gap: 30px;
+        }
+        
+        .btn-3d {
+            background-color: #1a3a8f;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(26, 58, 143, 0.3);
+        }
+        
+        .btn-3d:hover {
+            background-color: #2a5bd7;
+            transform: scale(1.1);
+        }
+        
+        .carrusel-dots-3d {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .dot-3d {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .dot-3d.active {
+            background-color: #1a3a8f;
+            transform: scale(1.2);
+        }
+        
+        /* Indicador automático */
+        .auto-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .auto-toggle-3d {
+            width: 50px;
+            height: 26px;
+            background-color: #ddd;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .auto-toggle-3d.active {
+            background-color: #1a3a8f;
+        }
+        
+        .auto-toggle-3d::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background-color: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .auto-toggle-3d.active::after {
+            transform: translateX(24px);
+        }
+        
+        /* CONTENEDOR DE COLEGIOS */
+        .colegios-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* TARJETA DE CADA COLEGIO */
+        .colegio-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .colegio-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .logo-colegio {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+        
+        .nombre-colegio {
+            font-size: 24px;
+            color: #1a3a8f;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .año-fundacion {
+            font-size: 18px;
+            color: #8f6a1a;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        /* BOTÓN PARA EXCEL */
+        .btn-excel {
+            display: inline-block;
+            background-color: #1d6f42;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-excel:hover {
+            background-color: #2a8c5a;
+        }
+        
+        .btn-excel i {
+            margin-right: 8px;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        
+        .logo-vaneduc-footer {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        
+        .lema-footer {
+            font-size: 20px;
+            color: #8f6a1a;
+            font-style: italic;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        /* INSTRUCCIONES */
+        .instrucciones {
+            background-color: #e8f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 40px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        .instrucciones h3 {
+            color: #1a3a8f;
+            margin-bottom: 15px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .carrusel-3d-container {
+                height: 400px;
+            }
+            
+            .logo-item {
+                width: 200px;
+                height: 200px;
+                margin-left: -100px;
+                margin-top: -100px;
+            }
+            
+            .logo-item img {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .carrusel-controls-3d {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- CABECERA -->
+    <div class="header">
+        <h1 class="titulo-pagina">ESTADÍSTICAS DE MOROSIDAD</h1>
+        <p class="subtitulo">Haz clic directamente en cualquier logo para ver las estadísticas en Excel Online</p>
+        <a href="index.html" class="volver">
+            <i class="fas fa-arrow-left"></i> Volver a la página principal
+        </a>
+    </div>
+    
+    <!-- CARRUSEL 3D -->
+    <div class="carrusel-3d-container">
+        <div class="carrusel-3d" id="carousel3D">
+            <!-- Los logos se cargarán con JavaScript -->
+        </div>
+    </div>
+    
+    <!-- CONTROLES DEL CARRUSEL 3D -->
+    <div class="carrusel-controls-3d">
+        <button class="btn-3d" id="prev3D">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="carrusel-dots-3d" id="dots3D">
+            <!-- Los puntos se generarán con JavaScript -->
+        </div>
+        
+        <button class="btn-3d" id="next3D">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+    
+    <!-- CONTROLE AUTOMÁTICO -->
+    <div class="auto-control">
+        <span>Rotación automática:</span>
+        <div class="auto-toggle-3d active" id="autoToggle3D"></div>
+    </div>
+    
+    <!-- INSTRUCCIONES MEJORADAS -->
+    <div class="instrucciones">
+        <h3><i class="fas fa-info-circle"></i> ¿Cómo usar esta página?</h3>
+        <p><strong>1. Haz clic directamente en cualquier logo del carrusel 3D</strong> para abrir el Excel con las estadísticas de ese colegio</p>
+        <p>2. Usa las flechas para rotar el carrusel manualmente</p>
+        <p>3. También puedes usar los puntos para saltar a un colegio específico</p>
+        <p>4. Abajo encontrarás todas las opciones en formato de tarjetas</p>
+    </div>
+    
+    <!-- LISTA DE COLEGIOS -->
+    <div class="colegios-container" id="colegiosContainer">
+        <!-- Los colegios se cargarán con JavaScript -->
+    </div>
+    
+    <!-- FOOTER -->
+    <div class="footer">
+        <img src="img/logo_vaneduc.png" alt="VANEDUC" class="logo-vaneduc-footer">
+        <div class="lema-footer">EXCELLENTIA IN EDUCATIONE</div>
+        <p>Plataforma de estadísticas de morosidad por colegio</p>
+        <p>Todos los derechos reservados © <span id="currentYear"></span></p>
+    </div>
+
+    <script>
+        // DATOS DE LOS COLEGIOS - ¡AQUÍ PONES TUS ENLACES REALES!
+        const colegiosData = [
+            {
+                id: 1,
+                nombre: "Colegio E. Echeverría",
+                nombreCorto: "E. Echeverría",
+                logo: "img/logo_echeverria.png",
+                excelUrl: "https://uaieduar-my.sharepoint.com/:x:/r/personal/ricardoeduardo_martinez_uai_edu_ar/_layouts/15/Doc.aspx?sourcedoc=%7B89891D71-70E3-4C20-AAEB-5B5403162785%7D&file=ECHEVERRIA%20DASHBOARD.xlsx&action=default&mobileredirect=true"
+            },
+            {
+                id: 2,
+                nombre: "Colegio Estrada.",
+                nombreCorto: "Estrada",
+                logo: "img/logo_estrada.png",
+                excelUrl: "https://uaieduar-my.sharepoint.com/:x:/r/personal/ricardoeduardo_martinez_uai_edu_ar/_layouts/15/Doc.aspx?sourcedoc=%7B942A9608-AE68-4229-A2D4-D59E9D19D95F%7D&file=ESTRADA%20DASHBOARD.xlsx&action=default&mobileredirect=true"
+            },
+            {
+                id: 3,
+                nombre: "Colegio L. da Vinci",
+                nombreCorto: "L. da Vinci",
+                logo: "img/logo_davinci.png",
+                excelUrl: "https://uaieduar-my.sharepoint.com/:x:/r/personal/ricardoeduardo_martinez_uai_edu_ar/_layouts/15/Doc.aspx?sourcedoc=%7B65C91660-B295-4A16-A195-5856257E58D2%7D&file=DA%20VINCI%20DASHBOARD.xlsx&action=default&mobileredirect=true"
+            },
+            {
+                id: 4,
+                nombre: "Colegio Belgrano.",
+                nombreCorto: "Belgrano",
+                logo: "img/logo_belgrano.png",
+                excelUrl: "https://uaieduar-my.sharepoint.com/:x:/r/personal/ricardoeduardo_martinez_uai_edu_ar/_layouts/15/Doc.aspx?sourcedoc=%7B1613A0C8-2C2F-4934-94B9-2D9E1D2092FA%7D&file=BELGRANO%20DASHBOARD.xlsx&action=default&mobileredirect=true"
+            },
+            {
+                id: 5,
+                nombre: "Colegio Alberdi.",
+                nombreCorto: "Alberdi",
+                logo: "img/logo_alberdi.png",
+                excelUrl: "https://uaieduar-my.sharepoint.com/:x:/r/personal/ricardoeduardo_martinez_uai_edu_ar/_layouts/15/Doc.aspx?sourcedoc=%7B464DF0F1-64D4-4C10-B611-7C04F8E6EC4E%7D&file=ALBERDI%20DASHBOARD.xlsx&action=default&mobileredirect=true"
+            },
+            {
+                id: 6,
+                nombre: "Colegio Galileo Galilei.",
+                nombreCorto: "Galileo Galilei",
+                logo: "img/logo_galileo.png",
+                excelUrl: "https://uaieduar-my.sharepoint.com/:x:/r/personal/ricardoeduardo_martinez_uai_edu_ar/_layouts/15/Doc.aspx?sourcedoc=%7B464DF0F1-64D4-4C10-B611-7C04F8E6EC4E%7D&file=ALBERDI%20DASHBOARD.xlsx&action=default&mobileredirect=true"
+            },
+            {
+                id: 7,
+                nombre: "Colegio Oxford High School.",
+                nombreCorto: "Oxford High School",
+                logo: "img/logo_oxford.png",
+                excelUrl: "https://uaieduar-my.sharepoint.com/:x:/r/personal/ricardoeduardo_martinez_uai_edu_ar/_layouts/15/Doc.aspx?sourcedoc=%7B1F7278F0-47C3-4572-8FFA-B011B27D0D9A%7D&file=OXFORD%20DASHBOARD.xlsx&action=default&mobileredirect=true"
+            },
+        ];
+        
+        // Variables para el carrusel 3D
+        let currentAngle = 0;
+        let autoPlayInterval3D;
+        let isAutoPlay3D = true;
+        const rotateInterval = 3000; // 3 segundos
+        const totalItems = colegiosData.length;
+        const angleStep = 360 / totalItems;
+        
+        // Función para cargar el carrusel 3D
+        function cargarCarrusel3D() {
+            const carrusel = document.getElementById('carousel3D');
+            const dotsContainer = document.getElementById('dots3D');
+            
+            // Crear elementos del carrusel
+            colegiosData.forEach((colegio, index) => {
+                // Crear elemento del logo (enlace directo al Excel)
+                const logoItem = document.createElement('a');
+                logoItem.className = 'logo-item';
+                logoItem.href = colegio.excelUrl;
+                logoItem.target = '_blank';
+                logoItem.dataset.index = index;
+                logoItem.dataset.id = colegio.id;
+                logoItem.title = `Haz clic para ver las estadísticas de ${colegio.nombre}`;
+                
+                // Marcar como activo el primer elemento
+                if (index === 0) {
+                    logoItem.classList.add('active');
+                }
+                
+                logoItem.innerHTML = `
+                    <img src="${colegio.logo}" alt="${colegio.nombre}">
+                    <span>${colegio.nombreCorto}</span>
+                    <div class="excel-indicator">
+                        <i class="fas fa-file-excel"></i>
+                    </div>
+                    <div class="click-instruction">¡Haz clic para abrir Excel!</div>
+                `;
+                
+                carrusel.appendChild(logoItem);
+                
+                // Crear punto indicador
+                const dot = document.createElement('div');
+                dot.className = 'dot-3d';
+                if (index === 0) dot.classList.add('active');
+                dot.dataset.index = index;
+                dot.addEventListener('click', () => goToItem(index));
+                dotsContainer.appendChild(dot);
+            });
+            
+            // Posicionar inicialmente los elementos en 3D
+            updateCarousel3D();
+            
+            // Configurar controles
+            document.getElementById('prev3D').addEventListener('click', rotatePrev);
+            document.getElementById('next3D').addEventListener('click', rotateNext);
+            
+            // Configurar auto toggle
+            document.getElementById('autoToggle3D').addEventListener('click', toggleAutoPlay3D);
+            
+            // Iniciar reproducción automática
+            startAutoPlay3D();
+        }
+        
+        // Función para actualizar la posición 3D de los elementos
+        function updateCarousel3D() {
+            const items = document.querySelectorAll('.logo-item');
+            const radius = 400; // Radio del carrusel
+            const activeIndex = Math.round((360 - currentAngle % 360) / angleStep) % totalItems;
+            
+            items.forEach((item, index) => {
+                // Calcular el ángulo para este elemento
+                const angle = currentAngle + index * angleStep;
+                const rad = angle * Math.PI / 180;
+                
+                // Calcular posición 3D
+                const x = Math.sin(rad) * radius;
+                const z = Math.cos(rad) * radius;
+                const opacity = 0.5 + (z + radius) / (2 * radius) * 0.5;
+                const scale = 0.7 + (z + radius) / (2 * radius) * 0.3;
+                
+                // Aplicar transformación 3D
+                item.style.transform = `translateX(${x}px) translateZ(${z}px) scale(${scale})`;
+                item.style.opacity = opacity;
+                item.style.zIndex = Math.round(z);
+                
+                // Marcar como activo si está al frente
+                if (index === activeIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Actualizar puntos activos
+            updateActiveDots(activeIndex);
+        }
+        
+        // Función para actualizar los puntos activos
+        function updateActiveDots(activeIndex) {
+            const dots = document.querySelectorAll('.dot-3d');
+            dots.forEach((dot, index) => {
+                if (index === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        // Función para rotar al elemento específico
+        function goToItem(index) {
+            const targetAngle = 360 - index * angleStep;
+            currentAngle = targetAngle;
+            updateCarousel3D();
+            resetAutoPlay3D();
+        }
+        
+        // Función para rotar al siguiente
+        function rotateNext() {
+            currentAngle -= angleStep;
+            updateCarousel3D();
+            resetAutoPlay3D();
+        }
+        
+        // Función para rotar al anterior
+        function rotatePrev() {
+            currentAngle += angleStep;
+            updateCarousel3D();
+            resetAutoPlay3D();
+        }
+        
+        // Función para iniciar reproducción automática
+        function startAutoPlay3D() {
+            if (isAutoPlay3D) {
+                autoPlayInterval3D = setInterval(rotateNext, rotateInterval);
+            }
+        }
+        
+        // Función para detener reproducción automática
+        function stopAutoPlay3D() {
+            clearInterval(autoPlayInterval3D);
+        }
+        
+        // Función para reiniciar reproducción automática
+        function resetAutoPlay3D() {
+            stopAutoPlay3D();
+            if (isAutoPlay3D) {
+                startAutoPlay3D();
+            }
+        }
+        
+        // Función para alternar reproducción automática
+        function toggleAutoPlay3D() {
+            const toggle = document.getElementById('autoToggle3D');
+            isAutoPlay3D = !isAutoPlay3D;
+            
+            if (isAutoPlay3D) {
+                toggle.classList.add('active');
+                startAutoPlay3D();
+            } else {
+                toggle.classList.remove('active');
+                stopAutoPlay3D();
+            }
+        }
+        
+        // Función para cargar los colegios en la página
+        function cargarColegios() {
+            const container = document.getElementById('colegiosContainer');
+            
+            colegiosData.forEach(colegio => {
+                const card = document.createElement('div');
+                card.className = 'colegio-card';
+                
+                card.innerHTML = `
+                    <img src="${colegio.logo}" alt="${colegio.nombre}" class="logo-colegio">
+                    <div class="nombre-colegio">${colegio.nombre}</div>
+                    <a href="${colegio.excelUrl}" target="_blank" class="btn-excel">
+                        <i class="fas fa-file-excel"></i> Ver Excel Online
+                    </a>
+                    <div style="margin-top: 10px; font-size: 14px; color: #666;">
+                        Haz clic para ver las estadísticas de morosidad
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+        
+        // Configurar año actual
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Mostrar advertencia si los enlaces son de ejemplo
+        function verificarEnlaces() {
+            const primerEnlace = colegiosData[0].excelUrl;
+            if (primerEnlace.includes('EJEMPLO')) {
+                const aviso = document.createElement('div');
+                aviso.style.cssText = `
+                    background-color: #fff3cd;
+                    border: 1px solid #ffeaa7;
+                    color: #856404;
+                    padding: 15px;
+                    border-radius: 5px;
+                    margin: 20px auto;
+                    max-width: 800px;
+                    text-align: center;
+                `;
+                aviso.innerHTML = `
+                    <strong><i class="fas fa-exclamation-triangle"></i> IMPORTANTE:</strong>
+                    Reemplaza los enlaces de ejemplo con tus enlaces reales de OneDrive.
+                `;
+                
+                const header = document.querySelector('.header');
+                header.parentNode.insertBefore(aviso, header.nextSibling);
+            }
+        }
+        
+        // Cuando la página cargue
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarCarrusel3D();
+            cargarColegios();
+            verificarEnlaces();
+            
+            // Pausar el carrusel cuando el usuario pase el mouse sobre él
+            document.querySelector('.carrusel-3d-container').addEventListener('mouseenter', () => {
+                if (isAutoPlay3D) stopAutoPlay3D();
+            });
+            
+            document.querySelector('.carrusel-3d-container').addEventListener('mouseleave', () => {
+                if (isAutoPlay3D) startAutoPlay3D();
+            });
+            
+            // Añadir navegación con teclado
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    rotatePrev();
+                } else if (e.key === 'ArrowRight') {
+                    rotateNext();
+                } else if (e.key === ' ') {
+                    toggleAutoPlay3D();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

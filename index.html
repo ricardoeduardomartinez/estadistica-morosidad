@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas de Morosidad</title>
+    <style>
+        /* ESTILOS BÁSICOS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #131127 0%, #2a1954 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #9f0f3e;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            color: #333;
+        }
+        
+        /* TÍTULO PRINCIPAL */
+        .titulo-principal {
+            margin-bottom: 50px;
+            padding-bottom: 25px;
+            border-bottom: 4px solid #1a3a8f;
+            position: relative;
+        }
+        
+        .titulo-contenedor {
+            position: relative;
+            display: inline-block;
+            padding: 20px 40px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: linear-gradient(rgba(26, 58, 143, 0.9), rgba(42, 91, 215, 0.9));
+        }
+        
+        /* GIF DE FONDO - AQUÍ VA TU GIF */
+        .gif-fondo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3; /* Puedes ajustar la transparencia */
+            z-index: 1;
+            border-radius: 15px;
+        }
+        
+        .titulo-texto {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .titulo-principal h1 {
+            font-size: 52px;
+            color: white;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+        
+        .titulo-principal h2 {
+            font-size: 40px;
+            color: #ffd700;
+            font-weight: 600;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* LOGOS - ESTILOS MEJORADOS */
+        .logos-container {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .logo-item {
+            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1), -8px -8px 16px #ffffff;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-width: 320px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(26, 58, 143, 0.1);
+        }
+        
+        /* EFECTO HOVER MEJORADO - Sombra más sólida y definida */
+        .logo-item:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 
+                0 20px 40px rgba(26, 58, 143, 0.4),
+                0 10px 20px rgba(0, 0, 0, 0.25),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+            border-color: rgba(26, 58, 143, 0.3);
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+        }
+        
+        /* Efecto de brillo interior en hover */
+        .logo-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(42, 91, 215, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            border-radius: 15px;
+        }
+        
+        .logo-item:hover::after {
+            opacity: 1;
+        }
+        
+        .logo-img {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.15));
+            border-radius: 8px;
+            background: white;
+            padding: 5px;
+        }
+        
+        /* Hover para la imagen - Sombra más intensa */
+        .logo-img:hover {
+            transform: scale(1.12);
+            filter: 
+                drop-shadow(0 10px 15px rgba(26, 58, 143, 0.5))
+                drop-shadow(0 5px 8px rgba(26, 58, 143, 0.3));
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            color: #1a3a8f;
+            font-weight: bold;
+            margin: 15px 0 5px 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-descripcion {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+        
+        /* ESTILOS PARA LAS IMÁGENES DE LOGO */
+        .logo-img {
+            /* Asegurar que las imágenes se vean bien */
+            object-fit: contain;
+            object-position: center;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        /* Contenedor de imagen con fondo para mejor visibilidad */
+        .logo-img-container {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* LEMA */
+        .lema {
+            margin: 40px 0;
+            padding: 20px;
+            background: linear-gradient(90deg, #1a3a8f, #2a5bd7);
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 6px 20px rgba(26, 58, 143, 0.3);
+        }
+        
+        .lema p {
+            font-size: 28px;
+            font-style: italic;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* INSTRUCCIONES */
+        .instrucciones {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #e8f4ff, #d4e7ff);
+            border-radius: 12px;
+            border-left: 6px solid #2a5bd7;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 15px rgba(42, 91, 215, 0.15);
+        }
+        
+        .instrucciones p {
+            color: #1a3a8f;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        /* PLACEHOLDER MEJORADO */
+        .img-placeholder {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #f5f5f5, #e9e9e9);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: #666;
+            border: 3px dashed #bbb;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .img-placeholder:hover {
+            background: linear-gradient(135deg, #e8e8e8, #dcdcdc);
+            border-color: #2a5bd7;
+            box-shadow: 
+                inset 0 0 15px rgba(0, 0, 0, 0.1),
+                0 5px 15px rgba(42, 91, 215, 0.2);
+        }
+        
+        .img-placeholder .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: #999;
+            font-weight: bold;
+        }
+        
+        /* ESTILO PARA ENLACE DE VANEDUC */
+        .vaneduc-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s ease;
+        }
+        
+        .vaneduc-link:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .titulo-principal h1 {
+                font-size: 42px;
+            }
+            
+            .titulo-principal h2 {
+                font-size: 32px;
+            }
+            
+            .logos-container {
+                gap: 40px;
+            }
+            
+            .logo-item {
+                min-width: 280px;
+            }
+            
+            .titulo-contenedor {
+                padding: 15px 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 15px;
+            }
+            
+            .titulo-principal h1 {
+                font-size: 36px;
+                letter-spacing: 2px;
+            }
+            
+            .titulo-principal h2 {
+                font-size: 28px;
+            }
+            
+            .logos-container {
+                gap: 30px;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .logo-item {
+                width: 100%;
+                max-width: 350px;
+                min-width: unset;
+            }
+            
+            .logo-img {
+                width: 150px;
+                height: 150px;
+            }
+            
+            /* Ajustar efectos hover para móvil */
+            .logo-item:hover {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 
+                    0 15px 30px rgba(26, 58, 143, 0.3),
+                    0 8px 15px rgba(0, 0, 0, 0.2);
+            }
+            
+            .logo-img:hover {
+                transform: scale(1.08);
+            }
+            
+            .lema p {
+                font-size: 22px;
+            }
+            
+            .instrucciones p {
+                font-size: 18px;
+            }
+            
+            .img-placeholder {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .titulo-contenedor {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- TÍTULO PRINCIPAL CON GIF -->
+        <div class="titulo-principal">
+            <div class="titulo-contenedor">
+                <!-- AQUÍ VA TU GIF - REEMPLAZA LA RUTA -->
+                <!-- EJEMPLOS: -->
+                <!-- GIF local: "gifs/mi-gif.gif" -->
+                <!-- GIF de internet: "https://media.giphy.com/media/ejemplo.gif" -->
+                <img src="img/estadisticas.gif" alt="GIF animado" class="gif-fondo">
+                
+                <!-- Texto del título -->
+                <div class="titulo-texto">
+                    <h1>ESTADÍSTICAS</h1>
+                    <h2>MOROSIDAD</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOGOS UAI Y VANEDUC -->
+        <div class="logos-container">
+            <!-- LOGO UAI -->
+            <a href="uai.html" class="uai-link"></a> 
+                <div class="logo-item" id="logoUAI-item">
+                    <div id="logoUAI-container">
+                        <!-- Placeholder que se muestra si la imagen no carga -->
+                        <div class="img-placeholder" id="uai-placeholder" style="display: none;">
+                            <div class="icon">UAI</div>
+                            <span>Logo UAI</span>
+                        </div>
+                        <!-- Contenedor para la imagen -->
+                        <div class="logo-img-container">
+                            <!-- Imagen real -->
+                            <img src="img/logo_uai.png" alt="UAI" class="logo-img" id="logoUAI-img">
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- LOGO VANEDUC -->
+            <div class="logo-item">
+                <a href="colegios.html" class="vaneduc-link">
+                    <div id="logoVaneduc-container">
+                        <!-- Placeholder que se muestra si la imagen no carga -->
+                        <div class="img-placeholder" id="vaneduc-placeholder" style="display: none;">
+                            <div class="icon">VANEDUC</div>
+                            <span>Logo VANEDUC</span>
+                        </div>
+                        <!-- Contenedor para la imagen -->
+                        <div class="logo-img-container">
+                            <!-- Imagen real -->
+                            <img src="img/logo_vaneduc.png" alt="VANEDUC" class="logo-img" id="logoVaneduc-img">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        
+        <!-- INSTRUCCIONES -->
+        <div class="instrucciones">
+            <p><i class="fas fa-mouse-pointer"></i> Haz clic en alguna imagen para ver las estadísticas</p>
+        </div>
+    </div>
+
+    <script>
+        // Función para verificar y manejar imágenes
+        function configurarImagenes() {
+            console.log("=== CONFIGURANDO IMÁGENES ===");
+            
+            // Verificar el GIF del título
+            const gifTitulo = document.querySelector('.gif-fondo');
+            if (gifTitulo) {
+                console.log("✅ GIF configurado en: " + gifTitulo.src);
+                
+                // Si quieres ajustar la opacidad del GIF
+                // gifTitulo.style.opacity = '0.4'; // Cambia este valor entre 0.1 y 0.9
+            }
+            
+            // Lista de imágenes a verificar
+            const imagenes = [
+                {
+                    id: 'logoUAI-img',
+                    placeholder: 'uai-placeholder',
+                    ruta: 'img/logo_uai.png',
+                    nombre: 'Logo UAI'
+                },
+                {
+                    id: 'logoVaneduc-img',
+                    placeholder: 'vaneduc-placeholder',
+                    ruta: 'img/logo_vaneduc.png',
+                    nombre: 'Logo VANEDUC'
+                }
+            ];
+            
+            // Verificar cada imagen
+            imagenes.forEach(imgConfig => {
+                const imgElement = document.getElementById(imgConfig.id);
+                const placeholder = document.getElementById(imgConfig.placeholder);
+                
+                if (imgElement) {
+                    // Crear una imagen de prueba para verificar si existe
+                    const testImg = new Image();
+                    testImg.onload = function() {
+                        console.log("✅ " + imgConfig.nombre + " - EXISTE");
+                        // Si la imagen existe, mostrar la imagen real
+                        imgElement.style.display = 'block';
+                        if (placeholder) placeholder.style.display = 'none';
+                    };
+                    testImg.onerror = function() {
+                        console.log("❌ " + imgConfig.nombre + " - NO ENCONTRADA");
+                        // Si no existe, mostrar placeholder
+                        imgElement.style.display = 'none';
+                        if (placeholder) {
+                            placeholder.style.display = 'flex';
+                        }
+                    };
+                    testImg.src = imgConfig.ruta;
+                    
+                    // Manejar error en la imagen real
+                    imgElement.onerror = function() {
+                        this.style.display = 'none';
+                        if (placeholder) {
+                            placeholder.style.display = 'flex';
+                        }
+                    };
+                }
+            });
+        }
+        
+        // Configurar interactividad
+        function configurarInteractividad() {
+            // Hacer que el logo UAI sea clickeable
+            const logoUAI = document.getElementById('logoUAI-img');
+            const placeholderUAI = document.getElementById('uai-placeholder');
+            const itemUAI = document.getElementById('logoUAI-item');
+            
+            if (itemUAI) {
+                itemUAI.style.cursor = 'pointer';
+                itemUAI.addEventListener('click', function() {
+                    window.location.href = 'uai.html';
+                });
+            }
+        }
+        
+        // Inicializar cuando la página cargue
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("=== PÁGINA DE ESTADÍSTICAS DE MOROSIDAD ===");
+            
+            configurarImagenes();
+            configurarInteractividad();
+            
+            // Instrucciones para el GIF
+            console.log("💡 INSTRUCCIONES PARA EL GIF:");
+            console.log("   1. Sube tu archivo GIF a tu repositorio");
+            console.log("   2. En la línea 192, cambia 'AQUÍ-PON-LA-RUTA-DE-TU-GIF.gif'");
+            console.log("   3. Ejemplos de rutas:");
+            console.log("      - 'gifs/estadisticas.gif' (si está en carpeta gifs/)");
+            console.log("      - 'mi-gif.gif' (si está en la raíz)");
+            console.log("      - 'https://media.giphy.com/media/ejemplo.gif' (URL externa)");
+        });
+    </script>
+</body>
+</html>
